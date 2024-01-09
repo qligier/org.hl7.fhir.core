@@ -163,10 +163,10 @@ public class XhtmlParser {
 
   }
 
-  private Set<String> elements = new HashSet<String>();
-  private Set<String> attributes = new HashSet<String>();  
-  private Map<String, String> definedEntities = new HashMap<>();
-  private Map<String, String> declaredEntities = new HashMap<>();
+  private Set<String> elements = new HashSet<String>(); //TODO find the right size
+  private Set<String> attributes = new HashSet<String>(); //TODO find the right size
+  private Map<String, String> definedEntities = new HashMap<>(); //TODO find the right size
+  private Map<String, String> declaredEntities = new HashMap<>(); //TODO find the right size
 
 
   public XhtmlParser() {
@@ -469,11 +469,14 @@ public class XhtmlParser {
   }
 
   private Reader rdr;
+
+  // TODO cache can be a ByteBuffer. It needs to automatically expends if needed
   private String cache = "";
   private XhtmlNode unwindPoint;
   private String lastText = "";
   private int line = 1;
   private int col = 0;
+  // TODO currentChar
   private char lastChar;
   private Location lastLoc;
   private boolean xmlMode;
@@ -724,6 +727,7 @@ public class XhtmlParser {
     {
       if (peekChar() == '&')
       {
+        // TODO: can we read the attribute and then parse literal if it contains a '&'?
         parseLiteral(b);
       }
       else
@@ -781,6 +785,7 @@ public class XhtmlParser {
 
   private char peekChar() throws IOException
   {
+    // TODO: this can be a simple getter for this.currentChar
     if (cache.length() > 0)
       return cache.charAt(0);
     else if (!rdr.ready())
@@ -818,6 +823,8 @@ public class XhtmlParser {
       lastChar = c;      
     }      
     col++;
+
+    // TODO: write to this.currentChar
     return c;
   }
 
